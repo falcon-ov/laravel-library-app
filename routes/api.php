@@ -1,7 +1,11 @@
 <?php
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\BookApiController;
+use App\Http\Controllers\Api\AuthorApiController;
+use App\Http\Controllers\Api\CategoryApiController;
+use App\Http\Controllers\Api\BorrowApiController;
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\AuthController;
 
 Route::prefix('auth')->middleware('api')->group(function () {
@@ -12,7 +16,11 @@ Route::prefix('auth')->middleware('api')->group(function () {
     Route::get('me', [AuthController::class, 'me'])->middleware('auth:api'); // GET вместо POST для получения данных пользователя
 });
 
-// Пример маршрута для проверки пользователя (можно оставить или убрать)
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:api'); // Заменили auth:sanctum на auth:api
+})->middleware('auth:api');
+
+Route::apiResource('books', BookApiController::class);
+Route::apiResource('authors', AuthorApiController::class);
+Route::apiResource('categories', CategoryApiController::class);
+Route::apiResource('borrows', BorrowApiController::class);
