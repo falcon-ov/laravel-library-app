@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -46,6 +47,12 @@ class User extends Authenticatable implements JWTSubject
             'password' => 'hashed',
         ];
     }
+
+    public function borrows()
+    {
+        return $this->hasMany(Borrow::class);
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
