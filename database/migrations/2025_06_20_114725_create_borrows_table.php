@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('borrowed_at');
             $table->foreignId('returned_at')->nullable();
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }
