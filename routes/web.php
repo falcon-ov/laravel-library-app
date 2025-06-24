@@ -16,10 +16,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::resource('books', BookController::class);
-    Route::resource('authors', AuthorController::class);
-    Route::resource('categories', CategoryController::class);
-    Route::resource('borrows', BorrowController::class);
+    // Route::resource('books', BookController::class);
+    // Route::resource('authors', AuthorController::class);
+    // Route::resource('categories', CategoryController::class);
+    // Route::resource('borrows', BorrowController::class);
 });
 
 require __DIR__.'/settings.php';
