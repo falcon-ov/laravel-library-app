@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class BookResource extends JsonResource
 {
     /**
-     * Преобразовать ресурс в массив.
+     * Transform the resource into an array.
      */
     public function toArray($request): array
     {
@@ -16,14 +16,14 @@ class BookResource extends JsonResource
             'title' => $this->title,
             'isbn' => $this->isbn,
             'year' => $this->year,
-            'author' => [
+            'author' => $this->author ? [
                 'id' => $this->author->id,
                 'name' => $this->author->name,
-            ],
-            'category' => [
+            ] : null,
+            'category' => $this->category ? [
                 'id' => $this->category->id,
                 'name' => $this->category->name,
-            ],
+            ] : null,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

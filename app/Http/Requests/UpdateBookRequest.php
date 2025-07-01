@@ -7,17 +7,11 @@ use Illuminate\Validation\Rule;
 
 class UpdateBookRequest extends FormRequest
 {
-    /**
-     * Определить, авторизован ли пользователь для выполнения этого запроса.
-     */
     public function authorize(): bool
     {
-        return true; // Авторизация через BookPolicy
+        return true; // Authorization handled by BookPolicy
     }
 
-    /**
-     * Получить правила валидации для обновления книги.
-     */
     public function rules(): array
     {
         return [
@@ -27,6 +21,7 @@ class UpdateBookRequest extends FormRequest
                 'string',
                 'max:13',
                 Rule::unique('books', 'isbn')->ignore($this->book),
+                'regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/' // Проверка ISBN
             ],
             'year' => ['sometimes', 'integer', 'min:1000', 'max:' . date('Y')],
             'author_id' => ['sometimes', 'integer', 'exists:authors,id'],
@@ -34,18 +29,16 @@ class UpdateBookRequest extends FormRequest
         ];
     }
 
-    /**
-     * Получить сообщения об ошибках для валидации.
-     */
     public function messages(): array
     {
         return [
-            'title.max' => 'Название книги не должно превышать 255 символов.',
-            'isbn.unique' => 'Этот ISBN уже используется.',
-            'year.min' => 'Год издания должен быть не ранее 1000.',
-            'year.max' => 'Год издания не может быть позже текущего года.',
-            'author_id.exists' => 'Указанный автор не существует.',
-            'category_id.exists' => 'Указанная категория не существует.',
+            'title.max' => 'Book title must not exceed 255 characters.',
+            'isbn.unique' => 'This ISBN is already in use.',
+            'isbn.regex' => 'ISBN must be a valid ISBN-10 or ISBN-13 format.',
+            'year.min' => 'Publication year must be 1000 or later.',
+            'year.max' => 'Publication year cannot be later than the current year.',
+            'author_id.exists' => 'The specified author does not exist.',
+            'category_id.exists' => 'The specified category does not exist.',
         ];
     }
 }

@@ -4,37 +4,28 @@ namespace App\Services;
 
 use App\Models\Book;
 use Illuminate\Support\Facades\DB;
-use Exception;
 
 class BookService
 {
     /**
-     * Создать новую книгу с использованием транзакции.
+     * Create a new book using a transaction.
      */
     public function create(array $data): Book
     {
         return DB::transaction(function () use ($data) {
-            try {
-                $book = Book::create($data);
-                return $book;
-            } catch (Exception $e) {
-                throw new Exception('Не удалось создать книгу: ' . $e->getMessage());
-            }
+            $book = Book::create($data);
+            return $book->load(['author', 'category']);
         });
     }
 
     /**
-     * Обновить существующую книгу с использованием транзакции.
+     * Update an existing book using a transaction.
      */
     public function update(Book $book, array $data): Book
     {
         return DB::transaction(function () use ($book, $data) {
-            try {
-                $book->update($data);
-                return $book->fresh();
-            } catch (Exception $e) {
-                throw new Exception('Не удалось обновить книгу: ' . $e->getMessage());
-            }
+            $book->update($data);
+            return $book->fresh()->load(['author', 'category']);
         });
     }
 }
